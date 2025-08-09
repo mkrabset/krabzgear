@@ -1,0 +1,35 @@
+
+div.vsplit {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    flex-grow: 1;
+    height: 100%;
+}
+
+div.vsplit div.left {
+    display: flex;
+    border: 1px solid;
+    overflow:auto;
+}
+
+
+div.vsplit div.right {
+    display: flex;
+    border: 1px solid;
+    overflow: hidden;
+}
+
+div.vsplit > div.splitter {
+    flex: 0 0 6px;
+    /* background: white; */
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: ew-resize;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='blue'/></svg>");
+}
+
+div.vsplit > div.splitter:hover {
+    background: lightblue;
+}
