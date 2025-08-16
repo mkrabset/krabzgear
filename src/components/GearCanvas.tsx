@@ -160,7 +160,7 @@ export function GearCanvas(props: GearCanvasProps) {
                 >
                     Import from SVG
                 </button>
-                <div><h4>KrabzGEAR © Marius Krabset 2025</h4></div>
+                <div><h4><a href={"https://github.com/mkrabset/krabzgear"}>KrabzGEAR</a> © Marius Krabset 2025</h4></div>
             </div>
 
 
