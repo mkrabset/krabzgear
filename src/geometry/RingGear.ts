@@ -49,6 +49,7 @@ export class RingGear {
     }
 
     calculateFlank(): PointPath {
+        const module = this.pinion.getDimensions().module
         const cutPiece = this.calculateCutPiece()
 
         const unfilteredPoints = cutPiece.getPoints()
@@ -60,7 +61,7 @@ export class RingGear {
             .filter(point => point.length() > this.pitchRadius - this.pinion.getDedendum())
             .filter(point => point.y >= 0)
             .filter((p, ind, arr) => ind === 0 || p.length() < arr[ind - 1].length())  // remove ripples
-        )
+        ).simplify(0.005*module)
 
         const path = this.applyBacklash(pathWithoutBacklash)
 
@@ -92,14 +93,14 @@ export class RingGear {
 
     calculateGear(): CubicBezier {
         const tooth = this.calculateTooth()
-        const toothCurve = tooth.toFittedBezier()
+        const toothCurve: CubicBezier = tooth.toFittedBezier()
 
         const result: CubicBezierSegment[] = []
         for (let i = 0; i < this.numberOfTeeth; i++) {
             const rot = Matrix3x3.rotate(Math.PI * 2 / this.numberOfTeeth * i)
             result.push(...toothCurve.transform(rot).getSegments())
         }
-        return new CubicBezier(result)
+        return new CubicBezier(result).close()
     }
 
     applyBacklash(path: PointPath): PointPath {

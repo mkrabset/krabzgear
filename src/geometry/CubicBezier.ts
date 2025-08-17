@@ -15,7 +15,23 @@ export class CubicBezier {
     private segs: CubicBezierSegment[];
 
     constructor(segs: CubicBezierSegment[]) {
-        this.segs = segs;
+        this.segs = segs.map(seg=>({...seg}));
+        this.segs.slice(1).forEach((next, index, arr) => {
+            const curr = this.segs[index]
+            const mid=curr.c4.plus(next.c1).multiply(0.5)
+            curr.c4=mid
+            next.c1=mid
+        })
+    }
+
+    public close(): CubicBezier {
+        const segs=[...this.segs]
+        const first=segs[0]
+        const last=segs[segs.length - 1]
+        const midPoint=last.c4.plus(first.c1).multiply(0.5)
+        segs[0]={...first, c1: midPoint}
+        segs[segs.length-1]={...last, c4: midPoint}
+        return new CubicBezier(segs)
     }
 
     public transform(matrix: Matrix3x3): CubicBezier {

@@ -66,6 +66,16 @@ export class PointPath {
         )
     }
 
+    public toSimpleBezier(tolerance: number = 0.000001): CubicBezier {
+        return new CubicBezier(this.getLines().map(line=> ({
+                c1: line.start,
+                c2: line.start.plus(line.end).multiply(0.5),
+                c3: line.start.plus(line.end).multiply(0.5),
+                c4: line.end
+            }))
+        )
+    }
+
     static concat(a: PointPath, b: PointPath) {
         return new PointPath([...a.points, ...b.points])
     }

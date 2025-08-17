@@ -164,7 +164,7 @@ export class InvoluteGear {
         const rotHalfToothCW = Matrix3x3.rotate(-Math.PI / this.parameters.numberOfTeeth)
         const orientedFlank = new PointPath(completeFlank.transform(rotHalfToothCW).getPoints().filter(p => p.y <= 0))
         const otherSide = orientedFlank.transform(Matrix3x3.scale(1, -1))
-        return PointPath.concat(orientedFlank, otherSide.reverse())
+        return PointPath.concat(orientedFlank, otherSide.reverse()).simplify(this.parameters.module * 0.001)
     }
 
     applyBacklash(curve: PointPath): PointPath {
@@ -188,7 +188,7 @@ export class InvoluteGear {
             const rot: Matrix3x3 = Matrix3x3.rotate(Math.PI * 2 / this.parameters.numberOfTeeth * t)
             gearProfile.push(...fittedTooth.transform(rot).getSegments())
         }
-        return [new CubicBezier(gearProfile)]
+        return [new CubicBezier(gearProfile).close()]
     }
 
     /**
